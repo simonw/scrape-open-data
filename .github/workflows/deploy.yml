@@ -1,0 +1,41 @@
+name: Build and deploy database
+
+on:
+  push:
+    branches:
+    - main
+  workflow_dispatch:
+  schedule:
+  - cron: '36 2,14 * * *' # twice a day
+
+jobs:
+  scheduled:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repo
+      uses: actions/checkout@v3
+    - uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+    - run: pip install -r requirements.txt
+    - name: Build socrata.db database
+      run: python build_socrata_db.py socrata.db socrata
+    - name: Set up Cloud Run
+      uses: google-github-actions/setup-gcloud@master
+      with:
+        version: '275.0.0'
+        service_account_email: ${{ secrets.GCP_SA_EMAIL }}
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+    - name: Deploy to Cloud Run
+      run: |-
+        gcloud config set run/region us-central1
+        gcloud config set project datasette-222320
+        datasette publish cloudrun socrata.db \
+          --service open-data \
+          -m metadata.yml \
+          --branch main \
+          --install=datasette-graphql \
+          --install=datasette-atom \
+          --install=datasette-search-all \
+          --install=datasette-block-robots
