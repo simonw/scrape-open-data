@@ -42,7 +42,9 @@ def fetch_all(verbose=False):
             url = base_url + "&scroll_id=" + scroll_id
         if verbose:
             click.echo(url, err=True)
-        data = httpx.get(url).json()
+        response = httpx.get(url)
+        response.raise_for_status()
+        data = response.json()
         results = data["results"]
         if not results:
             break
