@@ -15,7 +15,10 @@ def build_db(db_path, directory):
     root = pathlib.Path(directory)
     db = sqlite_utils.Database(db_path)
     with db.conn:
-        with click.progressbar(list(root.glob("*.jsonl"))) as files:
+        all_files = list(root.glob("*.jsonl"))
+        # Sort them so the stats ones come after the main ones
+        all_files.sort(key=lambda f: ('.stats.' in f.name, f.name))
+        with click.progressbar(all_files) as files:
             for jsonl in files:
                 if ".stats." in jsonl.name:
                     db["resources"].upsert_all(_stats(jsonl), pk="id", alter=True)
