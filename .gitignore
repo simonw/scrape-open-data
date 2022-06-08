@@ -1,0 +1,8 @@
+socrata.db
+.vscode
+Pipfile
+Pipfile.lock
+__pycache__/
+*.py[cod]
+*$py.class
+.DS_Store
