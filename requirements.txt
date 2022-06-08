@@ -1,3 +1,4 @@
 httpx
 click
 sqlite-utils
+datasette

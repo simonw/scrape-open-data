@@ -22,7 +22,7 @@ jobs:
     - name: Build socrata.db database
       run: python build_socrata_db.py socrata.db socrata
     - name: Set up Cloud Run
-      uses: google-github-actions/setup-gcloud@main
+      uses: google-github-actions/setup-gcloud@v0
       with:
         version: '275.0.0'
         service_account_email: ${{ secrets.GCP_SA_EMAIL }}
