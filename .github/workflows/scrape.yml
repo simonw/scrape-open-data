@@ -4,7 +4,8 @@ on:
   push:
   workflow_dispatch:
   schedule:
-  - cron: '23 * * * *'
+  - cron: '23 2,14 * * *' # twice a day
+  - cron: '38 7 * * 0' # once a week on Sunday
 
 jobs:
   scheduled:
@@ -19,7 +20,15 @@ jobs:
         python-version: '3.10'
         cache: 'pip'
     - run: pip install -r requirements.txt
-    - name: Fetch latest data
+    - name: Fetch latest data and stats once a week OR on workflow_dispatch
+      if: |-
+        github.event_name == 'workflow_dispatch' || (
+          github.event_name == 'schedule' && github.event.schedule == '38 7 * * 0'
+        )
+      run: python scrape_socrata.py socrata/ --stats
+    - name: Fetch data without stats twice a day
+      if: |-
+        github.event_name == 'schedule' && github.event.schedule == '23 2,14 * * *'
       run: python scrape_socrata.py socrata/
     - name: Commit and push if it changed
       run: |-
