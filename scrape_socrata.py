@@ -27,7 +27,7 @@ def scrape_socrata(directory, save_stats, verbose):
         domain_files[domain].write(json.dumps(record) + "\n")
         if save_stats:
             if domain not in stats_files:
-                stats_files[domain] = (root / "{}.stats.json".format(domain)).open("w")
+                stats_files[domain] = (root / "{}.stats.jsonl".format(domain)).open("w")
             stats_files[domain].write(json.dumps(stats) + "\n")
 
 
