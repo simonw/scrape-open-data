@@ -14,3 +14,9 @@ Run `python scrape_socrata.py socrata/` to scrape the data from Socrata and save
 Add `--stats` to include page view and download statistics in separate files.
 
 Add `--verbose` for verbose output.
+
+## build_socrata_db.py`
+
+Run this command to build a SQLite database from the `.jsonl` files in `socrata/`:
+
+    python build_socrata_db.py socrata.db socrata
