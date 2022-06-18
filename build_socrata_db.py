@@ -29,6 +29,10 @@ def build_db(db_path, directory):
                         alter=True,
                         column_order=("id", "domain", "link", "name", "description"),
                     )
+    # Delete anything with 'link is null', which means that it was in a stats file but
+    # had been removed from the regular file
+    db["resources"].delete_where("link is null")
+    # Enable search
     db["resources"].enable_fts(
         ["name", "description", "columns_name", "columns_description"]
     )
