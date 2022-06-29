@@ -7,6 +7,8 @@ Scrapes every available dataset from Socrata and stores them as newline-delimite
 - `socrata/data.delaware.gov.jsonl` contains the latest datasets for a specific domain. This is updated twice a day.
 - `socrata/data.delaware.gov.stats.jsonl` contains information on page views and download numbers. This is updated once a week to avoid every single fetch including updated counts for many different datasets.
 
+The resulting database is deployed to https://open-data.datasette.io/
+
 ## scrape_socrata.py
 
 Run `python scrape_socrata.py socrata/` to scrape the data from Socrata and save it in the `socrata/` directory.
