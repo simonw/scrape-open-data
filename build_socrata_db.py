@@ -34,7 +34,8 @@ def build_db(db_path, directory):
     db["resources"].delete_where("link is null")
     # Enable search
     db["resources"].enable_fts(
-        ["name", "description", "columns_name", "columns_description"]
+        ["name", "description", "columns_name", "columns_description"],
+        tokenize="porter"
     )
 
 
